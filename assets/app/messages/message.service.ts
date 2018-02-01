@@ -16,11 +16,11 @@ export class MessageService {
     public addMessage(message: Message): Observable<Message>
     {
         this.messages.push(message);
-        const body = JSON.stringify(message);
-        const headers = new HttpHeaders({'Content-Type': 'application/json'});
+        //const body = JSON.stringify(message);
+        //const headers = new HttpHeaders({'Content-Type': 'application/json'});
         //console.log(this.messages);
-        console.log(body);
-        return this.httpClient.post<Message>('http://localhost:3000/message', body, {headers: headers});
+        console.log(message);
+        return this.httpClient.post<Message>('http://localhost:3000/message', message);
     }
 
     //getters
