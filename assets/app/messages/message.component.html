@@ -1,0 +1,14 @@
+<article class="card mb-2">
+    <header class="card-body" [ngStyle]="{backgroundColor: color}" (mouseenter)="color = 'green'">
+        <p class="card-text">{{ message.content }}</p>
+    </header>
+    <footer class="card-footer d-flex justify-content-between">
+        <div class="italic_style">
+            {{ message.username }}
+        </div>
+        <div class="pull-right">
+            <a (click)="onEdit()">Edit</a>
+            <a (click)="onDelete()">Delete</a>
+        </div>
+    </footer>
+</article>
