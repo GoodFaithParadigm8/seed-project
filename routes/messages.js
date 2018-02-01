@@ -7,7 +7,7 @@ router.post('/', function(req, res, next) {
     const message = new Message({
         content: req.body.content
     });
-    console.log(rec);
+    console.log(req);
     message.save(function(err, result) {
         if (err)
             return res.status(500).json({
