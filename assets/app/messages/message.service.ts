@@ -27,11 +27,14 @@ export class MessageService {
     public getMessages(): Observable<Message[]>
     {
         return this.httpClient.get<Message[]>('http://localhost:3000/message')
-            .map( (messages: any[]) => {
+            .map( (data: any[]) => {
+                //console.log(messages);
                 let transformedMessages: Message[] = [];
-                for (let message of messages) {
+                for (let message of data.obj) {
+                    console.log("inside the loop");
                     transformedMessages.push(new Message(message.content, 'Dummy', message.id, null));
                 }
+                console.log(transformedMessages);
                 this.messages = transformedMessages;
                 return transformedMessages;
         });

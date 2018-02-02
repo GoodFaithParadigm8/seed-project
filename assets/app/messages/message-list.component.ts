@@ -19,7 +19,9 @@ export class MessageListComponent implements OnInit {
 
     public messages: Message[];
 
-    constructor(private messageService: MessageService) {}
+    constructor(private messageService: MessageService) {
+
+    }
 
     public ngOnInit(): void
     {
@@ -29,6 +31,7 @@ export class MessageListComponent implements OnInit {
                     this.messages = messages;
                 }
             );
+
     }
 
 }

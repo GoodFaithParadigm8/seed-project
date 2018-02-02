@@ -18,7 +18,8 @@
         "no-console": false,
         "max-line-length": false,
         "arrow-parens": false,
-        "object-literal-shorthand": false
+        "object-literal-shorthand": false,
+        "array-type": false
     },
     "rulesDirectory": []
 }
