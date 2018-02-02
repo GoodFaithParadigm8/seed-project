@@ -27,7 +27,7 @@ export class MessageService {
     public getMessages(): Observable<Message[]>
     {
         return this.httpClient.get<Message[]>('http://localhost:3000/message')
-            .map( (data: any[]) => {
+            .map( (data: any) => {
                 //console.log(messages);
                 let transformedMessages: Message[] = [];
                 for (let message of data.obj) {
