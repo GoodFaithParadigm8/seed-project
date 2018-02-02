@@ -1,5 +1,5 @@
 import {Message} from "./message.model";
-import {HttpClient, HttpHeaders, HttpResponse} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 import {Injectable} from "@angular/core";
 
 import 'rxjs/Rx';
@@ -19,14 +19,22 @@ export class MessageService {
         //const body = JSON.stringify(message);
         //const headers = new HttpHeaders({'Content-Type': 'application/json'});
         //console.log(this.messages);
-        console.log(message);
+        //console.log(message);
         return this.httpClient.post<Message>('http://localhost:3000/message', message);
     }
 
     //getters
-    public getMessages(): Message[]
+    public getMessages(): Observable<Message[]>
     {
-        return this.messages;
+        return this.httpClient.get<Message[]>('http://localhost:3000/message')
+            .map( (messages: any[]) => {
+                let transformedMessages: Message[] = [];
+                for (let message of messages) {
+                    transformedMessages.push(new Message(message.content, 'Dummy', message.id, null));
+                }
+                this.messages = transformedMessages;
+                return transformedMessages;
+        });
     }
 
     public deleteMessage(message: Message): void
