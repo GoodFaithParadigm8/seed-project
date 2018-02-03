@@ -1,5 +1,5 @@
 import {Message} from "./message.model";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {Injectable} from "@angular/core";
 
 import 'rxjs/Rx';
@@ -20,7 +20,8 @@ export class MessageService {
         //const headers = new HttpHeaders({'Content-Type': 'application/json'});
         //console.log(this.messages);
         //console.log(message);
-        return this.httpClient.post<Message>('http://localhost:3000/message', message);
+        return this.httpClient.post<Message>('http://localhost:3000/message', message)
+            .catch((error: HttpErrorResponse) => Observable.throw(error));
     }
 
     //getters
@@ -29,15 +30,15 @@ export class MessageService {
         return this.httpClient.get<Message[]>('http://localhost:3000/message')
             .map( (data: any) => {
                 //console.log(messages);
-                let transformedMessages: Message[] = [];
-                for (let message of data.obj) {
+                const transformedMessages: Message[] = [];
+                for (const message of data.obj) {
                     console.log("inside the loop");
                     transformedMessages.push(new Message(message.content, 'Dummy', message.id, null));
                 }
                 console.log(transformedMessages);
                 this.messages = transformedMessages;
                 return transformedMessages;
-        });
+        }).catch((error: HttpErrorResponse) => Observable.throw(error));
     }
 
     public deleteMessage(message: Message): void
