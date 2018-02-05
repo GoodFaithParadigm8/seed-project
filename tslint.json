@@ -19,7 +19,8 @@
         "max-line-length": false,
         "arrow-parens": false,
         "object-literal-shorthand": false,
-        "array-type": false
+        "array-type": false,
+        "member-ordering": false
     },
     "rulesDirectory": []
 }
