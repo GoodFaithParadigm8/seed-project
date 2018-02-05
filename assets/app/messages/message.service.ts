@@ -40,7 +40,7 @@ export class MessageService {
                 for (const message of data.obj) {
                     transformedMessages.push(new Message(message.content, 'Dummy', message._id, null));
                 }
-                console.log(transformedMessages);
+                //console.log(transformedMessages);
                 this.messages = transformedMessages;
                 return transformedMessages;
         }).catch((error: HttpErrorResponse) => Observable.throw(error));
@@ -53,13 +53,15 @@ export class MessageService {
 
     public updateMessage(message: Message): Observable<Message>
     {
-        console.log(message.messageId);
+        //console.log(message.messageId);
         return this.httpClient.patch<Message>('http://localhost:3000/message/' + message.messageId, message)
             .catch((error: HttpErrorResponse) => Observable.throw(error));
     }
 
-    public deleteMessage(message: Message): void
+    public deleteMessage(message: Message): Observable<Message>
     {
         this.messages.splice(this.messages.indexOf(message), 1);
+        return this.httpClient.delete<Message>('http://localhost:3000/message/' + message.messageId)
+            .catch((error: HttpErrorResponse) => Observable.throw(error));
     }
 }
