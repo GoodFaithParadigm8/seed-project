@@ -21,9 +21,14 @@ export class MessageService {
         //const headers = new HttpHeaders({'Content-Type': 'application/json'});
         //console.log(this.messages);
         //console.log(message);
-        return this.httpClient.post<Message>('http://localhost:3000/message', message)
+
+        //setup query string by adding the token
+        const token = localStorage.getItem('token')
+            ? '?token=' + localStorage.getItem('token')
+            : '';
+        return this.httpClient.post<Message>('http://localhost:3000/message' + token, message)
             .map((data: any) => {
-                const myMessage = new Message(data.obj.content, 'Dummy', data.obj._id, null);
+                const myMessage = new Message(data.obj.content, data.obj.user.firstName, data.obj._id, data.obj.user._id);
                 this.messages.push(myMessage);
                 return myMessage;
             })
@@ -38,7 +43,12 @@ export class MessageService {
                 //console.log(messages);
                 const transformedMessages: Message[] = [];
                 for (const message of data.obj) {
-                    transformedMessages.push(new Message(message.content, 'Dummy', message._id, null));
+                    transformedMessages.push(new Message(
+                        message.content,
+                        message.user.firstName,
+                        message._id,
+                        message.user._id)
+                    );
                 }
                 //console.log(transformedMessages);
                 this.messages = transformedMessages;
@@ -54,14 +64,25 @@ export class MessageService {
     public updateMessage(message: Message): Observable<Message>
     {
         //console.log(message.messageId);
-        return this.httpClient.patch<Message>('http://localhost:3000/message/' + message.messageId, message)
+
+        //setup query string by adding the token
+        const token = localStorage.getItem('token')
+            ? '?token=' + localStorage.getItem('token')
+            : '';
+        return this.httpClient.patch<Message>('http://localhost:3000/message/' + message.messageId + token, message)
             .catch((error: HttpErrorResponse) => Observable.throw(error));
     }
 
     public deleteMessage(message: Message): Observable<Message>
     {
         this.messages.splice(this.messages.indexOf(message), 1);
-        return this.httpClient.delete<Message>('http://localhost:3000/message/' + message.messageId)
+
+        //setup query string by adding the token
+        const token = localStorage.getItem('token')
+            ? '?token=' + localStorage.getItem('token')
+            : '';
+
+        return this.httpClient.delete<Message>('http://localhost:3000/message/' + message.messageId + token)
             .catch((error: HttpErrorResponse) => Observable.throw(error));
     }
 }

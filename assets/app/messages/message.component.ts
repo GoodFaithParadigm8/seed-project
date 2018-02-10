@@ -32,4 +32,9 @@ export class MessageComponent {
             );
     }
 
+    public belongsToUser(): boolean
+    {
+        return localStorage.getItem('userId') === this.message.userId;
+    }
+
 }

@@ -25,4 +25,12 @@ export class AuthService {
         return this.httpClient.post<User>('http://localhost:3000/user/signin', user)
             .catch((error: HttpErrorResponse) => Observable.throw(error));
     }
+
+    public logout(): void {
+        localStorage.clear();
+    }
+
+    public isLoggedIn(): boolean {
+        return localStorage.getItem('token') !== null;
+    }
 }
