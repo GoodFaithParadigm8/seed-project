@@ -4,6 +4,7 @@ import {EventEmitter, Injectable} from "@angular/core";
 
 import 'rxjs/Rx';
 import {Observable} from "rxjs/Observable";
+import {ErrorService} from "../errors/error.service";
 
 @Injectable()
 export class MessageService {
@@ -13,7 +14,7 @@ export class MessageService {
     public messageIsEdit = new EventEmitter<Message>();
 
     //constructor
-    constructor(private httpClient: HttpClient) {}
+    constructor(private httpClient: HttpClient, private errorService: ErrorService) {}
     
     public addMessage(message: Message): Observable<Message>
     {
@@ -32,7 +33,10 @@ export class MessageService {
                 this.messages.push(myMessage);
                 return myMessage;
             })
-            .catch((error: HttpErrorResponse) => Observable.throw(error));
+            .catch((error: HttpErrorResponse) => {
+                this.errorService.handleError(error);
+                return Observable.throw(error);
+            });
     }
 
     //getters
@@ -53,7 +57,10 @@ export class MessageService {
                 //console.log(transformedMessages);
                 this.messages = transformedMessages;
                 return transformedMessages;
-        }).catch((error: HttpErrorResponse) => Observable.throw(error));
+        }).catch((error: HttpErrorResponse) => {
+                this.errorService.handleError(error);
+                return Observable.throw(error);
+            });
     }
 
     public editMessage(message: Message)
@@ -70,7 +77,10 @@ export class MessageService {
             ? '?token=' + localStorage.getItem('token')
             : '';
         return this.httpClient.patch<Message>('http://localhost:3000/message/' + message.messageId + token, message)
-            .catch((error: HttpErrorResponse) => Observable.throw(error));
+            .catch((error: HttpErrorResponse) => {
+                this.errorService.handleError(error);
+                return Observable.throw(error);
+            });
     }
 
     public deleteMessage(message: Message): Observable<Message>
@@ -83,6 +93,9 @@ export class MessageService {
             : '';
 
         return this.httpClient.delete<Message>('http://localhost:3000/message/' + message.messageId + token)
-            .catch((error: HttpErrorResponse) => Observable.throw(error));
+            .catch((error: HttpErrorResponse) => {
+                this.errorService.handleError(error);
+                return Observable.throw(error);
+            });
     }
 }
